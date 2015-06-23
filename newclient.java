@@ -10,6 +10,7 @@ class newclient{
 		Scanner input=new Scanner(System.in);
 		BufferedReader br=null;
 		int total=0,liststatus=2,count;
+          	int xx5=0;
 		String givecard="";
 		Boolean ask=true;
 		int listcount=0;
@@ -34,14 +35,18 @@ class newclient{
 						switch(givecard){
 							case "Y":
 							case "y":
-						
+							 xx5++;
 								pw.write("Y"+"\n");
 								pw.flush();
 								mycard.add(br.readLine());
 							
 								total+=checkcard(total,(String)mycard.get(liststatus));	
 								System.out.println("你的總手牌 "+mycard.get(0)+" "+mycard.get(1)+" "+mycard.get(liststatus)+"\t"+"你現在的點數"+total+"\n");
-							
+								System.out.println("現在張數:"+(xx5+2));
+								if(xx5==3&&total<=21){
+							    	System.out.println("過五張!!");
+							    	break;
+							    }
 								liststatus++;
 						
 								break;
