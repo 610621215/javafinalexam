@@ -64,10 +64,11 @@ Boolean again=true;
 	
 	}
 	void givecard(Socket[]cs,int tag,String[]deck){
-	winplaygame wpg=new winplaygame();
+	
 	try{	
 		playercontrol pc=new playercontrol();			
 		while(again){
+			winplaygame wpg=new winplaygame();
 			for(int i=0;i<tag;i++){
 				
 				for(int j=0;j<2;j++){
@@ -112,26 +113,26 @@ Boolean again=true;
 				br=new BufferedReader(is);
 				pw.write(winmessage+"\n");
 				pw.flush();
-				againmessage[i]=br.readLine();
-				System.out.println(againmessage[i]);
+				//againmessage[i]=br.readLine();
+				//System.out.println(againmessage[i]);
 				
 				
 			}//µ¹Àò³Ó°T®§
-			for(int i=0;i<2;i++){
+			/*for(int i=0;i<2;i++){
 				
 				if(againmessage[i].equals("Y")){
 					againcount++;
 					
 				}
 				
-			}
-			if(againcount==2){
+			}*/
+			if(againcount==0){
 					again=true;
 					tempsocket=null;
 					pc.cleartag();
 					againcount=0;
-					for(int i=0;i<2;i++)
-						againmessage[i]="";
+					//for(int i=0;i<2;i++)
+						//againmessage[i]="";
 				}else{
 					again=false;
 					

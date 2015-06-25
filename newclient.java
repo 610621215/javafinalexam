@@ -13,8 +13,10 @@ class newclient{
           	int xx5=0;
 		String givecard="";
 		Boolean ask=true;
+		int limit=0;
 		int listcount=0;
 		PrintWriter pw=null;
+		int askcount=0;
 		String againmessage="";
 		ArrayList<String>mycard=new ArrayList<>();
 		try{
@@ -26,12 +28,15 @@ class newclient{
 				for(int i=0;i<2;i++){
 					mycard.add(br.readLine());
 					System.out.print(mycard.get(i)+"\t");
-					total+=checkcard(total,(String)mycard.get(i));
 				}
 				while(ask){
+				
+				if(limit==0){
+					total = counttotal(mycard);
+					System.out.print("總和:"+total+"\n");
 					System.out.println("要牌嗎?");
 					givecard=input.next();
-					if(total<=21){
+					while((givecard.equals("Y")||givecard.equals("y"))){
 						switch(givecard){
 							case "Y":
 							case "y":
@@ -39,40 +44,59 @@ class newclient{
 								pw.write("Y"+"\n");
 								pw.flush();
 								mycard.add(br.readLine());
-							
-								total+=checkcard(total,(String)mycard.get(liststatus));	
-								System.out.println("你的總手牌 "+mycard.get(0)+" "+mycard.get(1)+" "+mycard.get(liststatus)+"\t"+"你現在的點數"+total+"\n");
-								System.out.println("現在張數:"+(xx5+2));
+								System.out.print("你的手牌:");
+								for(int k=0;k<mycard.size();k++){
+									System.out.print(mycard.get(k));
+								}
+								total=counttotal(mycard);	
+								System.out.print("現在張數:"+(xx5+2));
+								System.out.print("總和:"+total+"\n");
 								if(xx5==3&&total<=21){
 							    	System.out.println("過五張!!");
 							    	break;
 							    }
-								liststatus++;
+								//liststatus++;
 						
 								break;
 							default:
-								ask=false;
+								//ask=false;
+								System.out.print("你的手牌:"+"\t");
+								for(int k=0;k<mycard.size();k++){
+
+									System.out.println(mycard.get(k)+"\t");	
+
+								}
 								pw.write("N"+"\n");
 								pw.flush();
 								pw.write(String.valueOf(total)+"\n");
 								pw.flush();
 								
 						}//switch
-					}//if
-					else{
+						if(total>=21){
+							break;
+						}
+						System.out.println("要牌嗎");
+						givecard = input.next();
+					}//while
+					
 						System.out.println("請等待結束");	
 						pw.write("N"+"\n");
 						pw.flush();
 						pw.write(String.valueOf(total)+"\n");
 						pw.flush();	
-						ask=false;
 						
+					}//if(limit)
+
+					askcount++;
+					limit++;
+					if(askcount==2){
+						ask=false;
 					}
 								
 				}//while(ASK)
 				//System.out.println("等待結果"+"\n"+br.readLine());
 					System.out.println("由"+br.readLine()+"獲勝\n");
-						System.out.println("下一局嗎?");
+						/*System.out.println("下一局嗎?");
 						 againmessage=input.next();
 						if(againmessage.equals("Y")||againmessage.equals("y"))
 							{
@@ -91,42 +115,74 @@ class newclient{
 						for(int i=0;i<=mycard.size();i++){
 
 							mycard.remove(listcount);
-						}
+						}*/
 						total=0;
 						ask=true;
+						askcount=0;
+						limit=0;
 							//ArrayList<String>mycard=new ArrayList<>();
+						mycard.clear();
+						
+						for(int i=0;i<mycard.size();i++){
+							System.out.println("\n牌"+mycard.get(i));
+						}
 			}
 
 		}catch(Exception ex){	
-
+			System.out.println(ex.toString());
 		}
 
 	}
-	public static int checkcard(int total,String temp){
-	int total2=0;
-		if(temp.length()==4){
-			total2=10;
-			//System.out.println("2");
+	public static int counttotal(ArrayList<String> card){
+		int total = 0;
+		int total2;
+		String temp = "";
+		int temp2 = card.size();
+		//System.out.println(temp2);
+		//System.out.println(card.get(0) + "\t" + card.get(1));
+		for(int a=0;a<temp2;a++){
+			if(card.get(a).charAt(2) == 'A'){
+				temp = card.get(a);
+				card.remove(a);
+				card.add(temp);
+			}
 		}
-		else if(temp.charAt(2)=='J'||temp.charAt(2)=='Q'||temp.charAt(2)=='K'){
-			total2=10;
-			//System.out.println("3");
-		}
-		else if(temp.charAt(2)=='A'){
-			if(21-total<=10){
-				total2=11;
-			
-			}else{
-				total2=1;
-			
+		
+		
+		for(int a=0;a<card.size();a++){
+			if (card.get(a).length() == 4) {
+				total2 = 10;
+				total = total + total2;
+				//card.remove(a);
+				// System.out.println("2");
+			} else if (card.get(a).charAt(2) == 'J' || card.get(a).charAt(2) == 'Q'
+					|| card.get(a).charAt(2) == 'K') {
+				total2 = 10;
+				total = total + total2;
+				//card.remove(a);
+				// System.out.println("3");
+			} else if (card.get(a).charAt(2) == 'A') {
+								
+
+				if (total + 11 <= 21) {
+					total2 = 11;
+					total = total + total2;
+
+				} else {
+					total2 = 1;
+					total = total + total2;
+
+				}
+
+			} else{
+				total2 = card.get(a).charAt(2) - '0';
+				total = total + total2;
+				//card.remove(a);
+				// System.out.println("5"+total);
 			}
 
-		}else{
-			total2=temp.charAt(2)-'0';
-			//System.out.println("5"+total);
-			
 		}
-		return total2;
 
+		return total;
 	}
 }
