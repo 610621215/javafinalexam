@@ -52,6 +52,7 @@ String []againmessage=new String[2];
 ArrayList<String>mylist=new ArrayList<>();
 Socket tempsocket=null;
 int againcount=0;
+int k=0;
 Boolean again=true;
 	playgame(Socket[]cs,int tag,String[]deck){
 		this.cs=cs;

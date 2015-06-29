@@ -36,6 +36,7 @@ class newclient{
 					System.out.print("總和:"+total+"\n");
 					System.out.println("要牌嗎?");
 					givecard=input.next();
+					xx5=0;
 					while((givecard.equals("Y")||givecard.equals("y"))){
 						switch(givecard){
 							case "Y":
@@ -52,7 +53,6 @@ class newclient{
 								System.out.print("現在張數:"+(xx5+2));
 								System.out.print("總和:"+total+"\n");
 								if(xx5==3&&total<=21){
-							    	System.out.println("過五張!!");
 							    	break;
 							    }
 								//liststatus++;
@@ -72,6 +72,10 @@ class newclient{
 								pw.flush();
 								
 						}//switch
+						if(xx5==3&&total<=21){
+					    	System.out.println("過五張!!");
+					    	break;
+					    }
 						if(total>=21){
 							break;
 						}
